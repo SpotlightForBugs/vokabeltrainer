@@ -51,6 +51,14 @@ public class Vokabel {
         falsch = false;
     }
 
+    public void setDeutsch(String deutsch) {
+        this.deutsch = deutsch;
+    }
+
+    public void setEnglisch(String englisch) {
+        this.englisch = englisch;
+    }
+
     public String toString() {
         return deutsch + " -> " + englisch;
     }

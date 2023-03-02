@@ -1,7 +1,13 @@
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List; // Import der java.util.List-Schnittstelle
 import javax.swing.*;
-import java.util.*;
+//import Collections; // Import der java.util.Collections-Klasse
+import java.util.Collections; // Import der java.util.Collections-Klasse
+import java.awt.GridLayout;
 
 public class VokabeltrainerGUI extends JFrame {
 
@@ -94,7 +100,7 @@ public class VokabeltrainerGUI extends JFrame {
                     numCorrect++;
                     trainer.beantworteVokabel(v, true);
                 } else {
-                    ausgabe.append("Falsch! Richtig wäre "" + (deNachEn ? v.getEnglisch() : v.getDeutsch()) + "" gewesen.\n");
+                    ausgabe.append("Falsch! Richtig wäre " + (deNachEn ? v.getEnglisch() : v.getDeutsch()) + " gewesen.\n");
                     trainer.beantworteVokabel(v, false);
                 }
             }
@@ -140,7 +146,7 @@ public class VokabeltrainerGUI extends JFrame {
 
     public static void main(String[] args) {
         Vokabeltrainer trainer = new Vokabeltrainer();
-        trainer.ladeVokabeln("vokabeln.txt");
+        trainer.ladeVokabeln("vok1.txt");
         new VokabeltrainerGUI(trainer);
     }
 }
