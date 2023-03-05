@@ -2,7 +2,7 @@ name: Create POM File
 on:
   push:
     branches:
-      - main
+      - Pro
 jobs:
   create-pom:
     runs-on: ubuntu-latest
