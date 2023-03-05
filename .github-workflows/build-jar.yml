@@ -1,0 +1,22 @@
+name: Build JAR
+on:
+  push:
+    branches:
+      - Pro
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+    - name: Build with Maven
+      run: mvn package
+    - name: Archive JAR file
+      uses: actions/upload-artifact@v2
+      with:
+        name: vokabeltrainer
+        path: target/vokabeltrainer.jar
