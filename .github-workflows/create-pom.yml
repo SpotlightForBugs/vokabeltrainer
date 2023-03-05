@@ -1,0 +1,49 @@
+name: Create POM File
+on:
+  push:
+    branches:
+      - main
+jobs:
+  create-pom:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Create POM File
+        run: |
+          echo '<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' > pom.xml
+          echo '         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">' >> pom.xml
+          echo '    <modelVersion>4.0.0</modelVersion>' >> pom.xml
+          echo '' >> pom.xml
+          echo '    <groupId>com.example</groupId>' >> pom.xml
+          echo '    <artifactId>vokabeltrainer</artifactId>' >> pom.xml
+          echo '    <version>1.0-SNAPSHOT</version>' >> pom.xml
+          echo '' >> pom.xml
+          echo '    <dependencies>' >> pom.xml
+          echo '        <!-- Add any dependencies required by your project here -->' >> pom.xml
+          echo '    </dependencies>' >> pom.xml
+          echo '' >> pom.xml
+          echo '    <build>' >> pom.xml
+          echo '        <plugins>' >> pom.xml
+          echo '            <plugin>' >> pom.xml
+          echo '                <groupId>org.apache.maven.plugins</groupId>' >> pom.xml
+          echo '                <artifactId>maven-jar-plugin</artifactId>' >> pom.xml
+          echo '                <version>3.2.0</version>' >> pom.xml
+          echo '                <configuration>' >> pom.xml
+          echo '                    <archive>' >> pom.xml
+          echo '                        <manifest>' >> pom.xml
+          echo '                            <mainClass>com.example.Main</mainClass>' >> pom.xml
+          echo '                        </manifest>' >> pom.xml
+          echo '                    </archive>' >> pom.xml
+          echo '                </configuration>' >> pom.xml
+          echo '            </plugin>' >> pom.xml
+          echo '        </plugins>' >> pom.xml
+          echo '    </build>' >> pom.xml
+          echo '</project>' >> pom.xml
+      - name: Commit changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add pom.xml
+          git commit -m "Add pom.xml"
+          git push
