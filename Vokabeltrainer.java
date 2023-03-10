@@ -77,9 +77,15 @@ public class Vokabeltrainer {
             
         } 
         else {
-            if (!falscheVokabeln.contains(vokabel)) {
-                falscheVokabeln.add(vokabel);
+            
+            boolean contains = false;
+            
+            while (falscheVokablen.hasAccess()) {
+                if (falscheVokabeln.getContent == vokabel) contains = true;
             }
+            
+            if (!(contains)) falscheVokabeln.append(vokabel);
+            
         }
     }
 
