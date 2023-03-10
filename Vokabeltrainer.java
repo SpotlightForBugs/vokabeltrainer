@@ -31,8 +31,8 @@ public class Vokabeltrainer {
                 String[] parts = line.split(";");
                 if (parts.length == 2) {
                     Vokabel v = new Vokabel(parts[0], parts[1]);
-                    alleVokabeln.add(v);
-                    neueVokabeln.add(v);
+                    alleVokabeln.append(v);
+                    neueVokabeln.append(v);
                 }
             }
             scanner.close();
