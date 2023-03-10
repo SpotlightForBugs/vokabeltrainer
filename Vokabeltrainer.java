@@ -67,10 +67,16 @@ public class Vokabeltrainer {
                 neueVokabeln.next();
             }
             
-            if (!bekannteVokabeln.contains(vokabel)) {
-                bekannteVokabeln.add(vokabel);
+            boolean contains = false;
+            
+            while (bekannteVokablen.hasAccess()) {
+                if (bekannteVokabeln.getContent == vokabel) contains = true;
             }
-        } else {
+            
+            if (!(contains)) bekannteVokabeln.append(vokabel);
+            
+        } 
+        else {
             if (!falscheVokabeln.contains(vokabel)) {
                 falscheVokabeln.add(vokabel);
             }
