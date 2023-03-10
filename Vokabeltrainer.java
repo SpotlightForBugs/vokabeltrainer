@@ -59,23 +59,47 @@ public class Vokabeltrainer {
 
     public void beantworteVokabel(Vokabel vokabel, boolean richtigBeantwortet) {
         if (richtigBeantwortet) {
-            neueVokabeln.remove(vokabel);
-            if (!bekannteVokabeln.contains(vokabel)) {
-                bekannteVokabeln.add(vokabel);
+            while (neueVokabeln.hasAccess()) {
+                if (neueVokabel.getContent() == vokabel) {
+                    neueVokabeln.remove();
+                }
+                
+                neueVokabeln.next();
             }
-        } else {
-            if (!falscheVokabeln.contains(vokabel)) {
-                falscheVokabeln.add(vokabel);
+            
+            boolean contains = false;
+            
+            while (bekannteVokablen.hasAccess()) {
+                if (bekannteVokabeln.getContent == vokabel) contains = true;
+                bekannteVokabeln.next();
             }
+            
+            if (!(contains)) bekannteVokabeln.append(vokabel);
+            
+        } 
+        else {
+            
+            boolean contains = false;
+            
+            while (falscheVokablen.hasAccess()) {
+                if (falscheVokabeln.getContent == vokabel) contains = true;
+                falscheVokabeln.next();
+            }
+            
+            if (!(contains)) falscheVokabeln.append(vokabel);
+            
         }
     }
 
     public void speichereVokabeln() {
         try {
             FileWriter writer = new FileWriter(datei);
-            for (Vokabel v : alleVokabeln) {
+            
+            while (alleVokabeln.hasAccess()) {
                 writer.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
+                alleVokabeln.next();
             }
+            
             writer.close();
         } catch (IOException e) {
             System.out.println("Fehler beim Schreiben der Datei " + datei.getName() + ": " + e.getMessage());
