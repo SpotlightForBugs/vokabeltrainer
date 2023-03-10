@@ -59,7 +59,14 @@ public class Vokabeltrainer {
 
     public void beantworteVokabel(Vokabel vokabel, boolean richtigBeantwortet) {
         if (richtigBeantwortet) {
-            neueVokabeln.remove(vokabel);
+            while (neueVokabeln.hasAccess()) {
+                if (neueVokabel.getContent() == vokabel) {
+                    neueVokabeln.remove();
+                }
+                
+                neueVokabeln.next();
+            }
+            
             if (!bekannteVokabeln.contains(vokabel)) {
                 bekannteVokabeln.add(vokabel);
             }
