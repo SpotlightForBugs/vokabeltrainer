@@ -2,8 +2,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Vokabeltrainer {
@@ -14,17 +12,17 @@ public class Vokabeltrainer {
     private File datei;
 
     public Vokabeltrainer() {
-        alleVokabeln = new ArrayList<Vokabel>();
-        bekannteVokabeln = new ArrayList<Vokabel>();
-        falscheVokabeln = new ArrayList<Vokabel>();
-        neueVokabeln = new ArrayList<Vokabel>();
+        alleVokabeln = new List<Vokabel>();
+        bekannteVokabeln = new List<Vokabel>();
+        falscheVokabeln = new List<Vokabel>();
+        neueVokabeln = new List<Vokabel>();
     }
 
     public void ladeVokabeln(String dateiname) {
-        alleVokabeln.clear();
-        bekannteVokabeln.clear();
-        falscheVokabeln.clear();
-        neueVokabeln.clear();
+        alleVokabeln = new List<Vokabel>();
+        bekannteVokabeln = new List<Vokabel>();
+        falscheVokabeln = new List<Vokabel>();
+        neueVokabeln = new List<Vokabel>();
         datei = new File(dateiname);
         try {
             Scanner scanner = new Scanner(datei);
