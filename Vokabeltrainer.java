@@ -10,20 +10,27 @@ public class Vokabeltrainer {
     private List<Vokabel> falscheVokabeln;
     private List<Vokabel> neueVokabeln;
     private File datei;
+    private File falsch;
+    private File neu;
 
-    public Vokabeltrainer() {
+    public Vokabeltrainer(String path) {
         alleVokabeln = new List<Vokabel>();
         bekannteVokabeln = new List<Vokabel>();
         falscheVokabeln = new List<Vokabel>();
         neueVokabeln = new List<Vokabel>();
+
+        datei = new File(path+"Alle.txt");
+        neu = new File(path+"Neu.txt");
+        falsch = new File(path+"Falsch.txt");
     }
 
-    public void ladeVokabeln(String dateiname) {
+    public void ladeVokabeln() {
+
         alleVokabeln = new List<Vokabel>();
         bekannteVokabeln = new List<Vokabel>();
         falscheVokabeln = new List<Vokabel>();
         neueVokabeln = new List<Vokabel>();
-        datei = new File(dateiname);
+
         try {
             Scanner scanner = new Scanner(datei);
             while (scanner.hasNextLine()) {
@@ -32,12 +39,34 @@ public class Vokabeltrainer {
                 if (parts.length == 2) {
                     Vokabel v = new Vokabel(parts[0], parts[1]);
                     alleVokabeln.append(v);
+                }
+            }
+            scanner.close();
+
+            Scanner scanner = new Scanner(neu);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(";");
+                if (parts.length == 2) {
+                    Vokabel v = new Vokabel(parts[0], parts[1]);
                     neueVokabeln.append(v);
                 }
             }
             scanner.close();
+
+            Scanner scanner = new Scanner(falsch);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(";");
+                if (parts.length == 2) {
+                    Vokabel v = new Vokabel(parts[0], parts[1]);
+                    falscheVokabeln.append(v);
+                }
+            }
+            scanner.close();
+
         } catch (FileNotFoundException e) {
-            System.out.println("Fehler beim Lesen der Datei " + dateiname + ": " + e.getMessage());
+            System.out.println("Fehler beim Lesen der Datei " + path + ": " + e.getMessage());
         }
     }
 

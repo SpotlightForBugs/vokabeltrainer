@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 
 public class VokabeltrainerGUI extends JFrame {
 
+    private String path = ""; // Hier muss der Dateipfad angegeben werden, wenn sie in einem andern Ordner liegen
     private Vokabeltrainer trainer;
     private JTextArea ausgabe;
     private JComboBox<String> modusAuswahl;
@@ -153,8 +154,8 @@ public class VokabeltrainerGUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        Vokabeltrainer trainer = new Vokabeltrainer();
-        trainer.ladeVokabeln("vok1.txt");
+        Vokabeltrainer trainer = new Vokabeltrainer(path);
+        trainer.ladeVokabeln();
         new VokabeltrainerGUI(trainer);
     }
 }
