@@ -48,7 +48,7 @@ public class Vokabeltrainer {
             }
             scanner.close();
 
-            Scanner scanner = new Scanner(neu);
+            Scanner scanner2 = new Scanner(neu);
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split(";");
@@ -59,7 +59,7 @@ public class Vokabeltrainer {
             }
             scanner.close();
 
-            Scanner scanner = new Scanner(falsch);
+            Scanner scanner3 = new Scanner(falsch);
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split(";");
