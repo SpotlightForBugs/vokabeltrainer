@@ -3,7 +3,6 @@ import java.awt.FlowLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List; // Import der java.util.List-Schnittstelle
 import javax.swing.*;
 //import Collections; // Import der java.util.Collections-Klasse
 import java.util.Collections; // Import der java.util.Collections-Klasse
@@ -85,7 +84,7 @@ public class VokabeltrainerGUI extends JFrame {
                 return;
             }
             ausgabe.setText("");
-            Collections.shuffle(vokabeln);
+            Util.shuffle(vokabeln);
             int numCorrect = 0;
             for (Vokabel v : vokabeln) {
                 String frage = deNachEn ? v.getDeutsch() : v.getEnglisch();
