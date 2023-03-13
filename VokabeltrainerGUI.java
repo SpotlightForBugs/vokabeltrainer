@@ -84,9 +84,13 @@ public class VokabeltrainerGUI extends JFrame {
                 return;
             }
             ausgabe.setText("");
-            Util.shuffle(vokabeln);
+            vokabeln = Util.shuffle(vokabeln);
             int numCorrect = 0;
-            for (Vokabel v : vokabeln) {
+            vokabeln.toFirst();
+            while(vokabeln.hasAccess()) {
+                Vokabel v = vokabeln.getContent();
+                vokabeln.next();
+
                 String frage = deNachEn ? v.getDeutsch() : v.getEnglisch();
                 String antwort = JOptionPane.showInputDialog(null, frage);
                 if (antwort == null) {
@@ -103,7 +107,7 @@ public class VokabeltrainerGUI extends JFrame {
                     trainer.beantworteVokabel(v, false);
                 }
             }
-            ausgabe.append("\nErgebnis: " + numCorrect + "/" + vokabeln.size() + " richtig beantwortet.");
+            ausgabe.append("\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
         }
     }
 

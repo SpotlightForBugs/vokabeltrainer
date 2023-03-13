@@ -15,7 +15,7 @@ public class Util {
 
 
 
-    public int size(List<ContentType> list) {
+    public static int size(List<Vokabel> list) {
         int counter = 0;
         list.toFirst();
         while (list.hasAccess()) {
@@ -25,7 +25,7 @@ public class Util {
         return counter;
     }
 
-    public static List<ContentType> shuffle(List<Vokabel> list) {
+    public static List<Vokabel> shuffle(List<Vokabel> list) {
         Random random = new Random();
         int size = size(list);
         for (int i = 0; i < size; i++) {
@@ -34,7 +34,7 @@ public class Util {
             for (int j = 0; j < randomIndex; j++) {
                 list.next();
             }
-            ContentType temp = list.getContent();
+            Vokabel temp = list.getContent();
             list.remove();
             list.toFirst();
             for (int j = 0; j < i; j++) {
@@ -56,7 +56,7 @@ public class Util {
         return false;
     }
 
-    
+
 
 
 
