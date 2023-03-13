@@ -49,7 +49,7 @@ public class Vokabeltrainer {
             scanner.close();
 
             Scanner scanner2 = new Scanner(neu);
-            while (scanner.hasNextLine()) {
+            while (scanner2.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split(";");
                 if (parts.length == 2) {
@@ -57,10 +57,10 @@ public class Vokabeltrainer {
                     neueVokabeln.append(v);
                 }
             }
-            scanner.close();
+            scanner2.close();
 
             Scanner scanner3 = new Scanner(falsch);
-            while (scanner.hasNextLine()) {
+            while (scanner3.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split(";");
                 if (parts.length == 2) {
@@ -68,7 +68,7 @@ public class Vokabeltrainer {
                     falscheVokabeln.append(v);
                 }
             }
-            scanner.close();
+            scanner3.close();
 
         } catch (FileNotFoundException e) {
             System.out.println("Fehler beim Lesen der Datei " + path + ": " + e.getMessage());
