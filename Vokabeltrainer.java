@@ -138,8 +138,33 @@ public class Vokabeltrainer {
                 writer.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
                 alleVokabeln.next();
             }
-            
+
             writer.close();
+
+
+            FileWriter writer1 = new FileWriter(neu);
+
+            neueVokabeln.toFirst();
+            while (neueVokabeln.hasAccess()) {
+                Vokabel v = neueVokabeln.getContent();
+                writer1.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
+                neueVokabeln.next();
+            }
+
+            writer1.close();
+
+
+            FileWriter writer2 = new FileWriter(falsch);
+
+            falscheVokabeln.toFirst();
+            while (falscheVokabeln.hasAccess()) {
+                Vokabel v = falscheVokabeln.getContent();
+                writer2.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
+                falscheVokabeln.next();
+            }
+            
+            writer2.close();
+
         } catch (IOException e) {
             System.out.println("Fehler beim Schreiben der Datei " + datei.getName() + ": " + e.getMessage());
         }
