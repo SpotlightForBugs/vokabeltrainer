@@ -60,7 +60,7 @@ public class Vokabeltrainer {
     public void beantworteVokabel(Vokabel vokabel, boolean richtigBeantwortet) {
         if (richtigBeantwortet) {
             while (neueVokabeln.hasAccess()) {
-                if (neueVokabel.getContent() == vokabel) {
+                if (neueVokabeln.getContent() == vokabel) {
                     neueVokabeln.remove();
                 }
                 
@@ -69,8 +69,8 @@ public class Vokabeltrainer {
             
             boolean contains = false;
             
-            while (bekannteVokablen.hasAccess()) {
-                if (bekannteVokabeln.getContent == vokabel) contains = true;
+            while (bekannteVokabeln.hasAccess()) {
+                if (bekannteVokabeln.getContent() == vokabel) contains = true;
                 bekannteVokabeln.next();
             }
             
@@ -81,8 +81,8 @@ public class Vokabeltrainer {
             
             boolean contains = false;
             
-            while (falscheVokablen.hasAccess()) {
-                if (falscheVokabeln.getContent == vokabel) contains = true;
+            while (falscheVokabeln.hasAccess()) {
+                if (falscheVokabeln.getContent() == vokabel) contains = true;
                 falscheVokabeln.next();
             }
             
@@ -94,8 +94,9 @@ public class Vokabeltrainer {
     public void speichereVokabeln() {
         try {
             FileWriter writer = new FileWriter(datei);
-            
+            alleVokabeln.toFirst();
             while (alleVokabeln.hasAccess()) {
+                Vokabel v = alleVokabeln.getContent();
                 writer.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
                 alleVokabeln.next();
             }
