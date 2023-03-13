@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Vokabeltrainer {
+
+    private String path;
     private List<Vokabel> alleVokabeln;
     private List<Vokabel> bekannteVokabeln;
     private List<Vokabel> falscheVokabeln;
@@ -14,6 +16,9 @@ public class Vokabeltrainer {
     private File neu;
 
     public Vokabeltrainer(String path) {
+
+        this.path = path;
+
         alleVokabeln = new List<Vokabel>();
         bekannteVokabeln = new List<Vokabel>();
         falscheVokabeln = new List<Vokabel>();
