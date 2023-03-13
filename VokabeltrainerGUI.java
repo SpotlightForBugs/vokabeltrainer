@@ -113,7 +113,10 @@ public class VokabeltrainerGUI extends JFrame {
             JDialog dialog = new JDialog(VokabeltrainerGUI.this, "Vokabeln bearbeiten", true);
             JPanel panel = new JPanel(new GridLayout(0, 2));
             List<Vokabel> alleVokabeln = trainer.getAlleVokabeln();
-            for (Vokabel v : alleVokabeln) {
+
+            alleVokabeln.toFirst();
+            while(alleVokabeln.hasAccess()) {
+                Vokabel v = alleVokabeln.getContent();
                 panel.add(new JLabel(v.getDeutsch() + ":"));
                 JTextField englischField = new JTextField(v.getEnglisch());
                 panel.add(englischField);
@@ -121,7 +124,9 @@ public class VokabeltrainerGUI extends JFrame {
                 speichernButton.addActionListener(new SpeichernButtonHandler(v, englischField));
                 panel.add(speichernButton);
                 panel.add(new JLabel(""));
+                alleVokabeln.next();
             }
+
             JScrollPane scrollPane = new JScrollPane(panel);
             dialog.add(scrollPane);
             dialog.pack();
