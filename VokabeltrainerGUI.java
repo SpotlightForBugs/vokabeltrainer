@@ -84,18 +84,19 @@ public class VokabeltrainerGUI extends JFrame {
                 ausgabe.setText("Keine Vokabeln vorhanden.");
                 return;
             }
+
+            int groesse = Util.size(vokabeln) - 1;
+
             ausgabe.setText("");
             vokabeln = Util.shuffle(vokabeln);
             int numCorrect = 0;
             vokabeln.toFirst();
             while(vokabeln.hasAccess()) {
                 Vokabel v = vokabeln.getContent();
-                vokabeln.next();
 
                 String frage = deNachEn ? v.getDeutsch() : v.getEnglisch();
                 String antwort = JOptionPane.showInputDialog(null, frage);
                 if (antwort == null) {
-// Abbruch durch Benutzer
                     ausgabe.setText("Abbruch durch Benutzer.");
                     trainer.speichereVokabeln();
                     return;
@@ -108,8 +109,10 @@ public class VokabeltrainerGUI extends JFrame {
                     ausgabe.append("Falsch! Richtig wäre " + (deNachEn ? v.getEnglisch() : v.getDeutsch()) + " gewesen.\n");
                     trainer.beantworteVokabel(v, false);
                 }
+                vokabeln.next();
             }
-            ausgabe.append("\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet."); // ToDo: Problem mit 1/0 richtig
+            ausgabe.append("\nErgebnis: " + numCorrect + "/" + groesse + " richtig beantwortet.");
+            trainer.speichereVokabeln();
         }
     }
 

@@ -8,7 +8,6 @@ public class Vokabeltrainer {
 
     private String path;
     private List<Vokabel> alleVokabeln;
-    private List<Vokabel> alleVokabelnSchreiben;
 
     private List<Vokabel> bekannteVokabeln;
     private List<Vokabel> falscheVokabeln;
@@ -16,26 +15,26 @@ public class Vokabeltrainer {
     private File datei;
     private File falsch;
     private File neu;
+    private File bekannt;
 
     public Vokabeltrainer(String path) {
 
         this.path = path;
 
         alleVokabeln = new List<Vokabel>();
-        alleVokabelnSchreiben = new List<Vokabel>();
         bekannteVokabeln = new List<Vokabel>();
         falscheVokabeln = new List<Vokabel>();
         neueVokabeln = new List<Vokabel>();
 
         datei = new File(path+"Alle.txt");
         neu = new File(path+"Neu.txt");
+        bekannt = new File(path+"Bekannt.txt");
         falsch = new File(path+"Falsch.txt");
     }
 
     public void ladeVokabeln() {
 
         alleVokabeln = new List<Vokabel>();
-        alleVokabelnSchreiben = new List<Vokabel>();
         bekannteVokabeln = new List<Vokabel>();
         falscheVokabeln = new List<Vokabel>();
         neueVokabeln = new List<Vokabel>();
@@ -51,7 +50,6 @@ public class Vokabeltrainer {
                 }
             }
             scanner.close();
-            alleVokabelnSchreiben = alleVokabeln;
 
             Scanner scanner1 = new Scanner(neu);
             while (scanner1.hasNextLine()) {
@@ -74,6 +72,16 @@ public class Vokabeltrainer {
                 }
             }
             scanner2.close();
+
+            Scanner scanner3 = new Scanner(bekannt);
+            while (scanner3.hasNextLine()) {
+                String line = scanner3.nextLine();
+                String[] parts = line.split(";");
+                if (parts.length == 2) {
+                    Vokabel v = new Vokabel(parts[0], parts[1]);
+                    bekannteVokabeln.append(v);
+                }
+            }
 
         } catch (FileNotFoundException e) {
             System.out.println("Fehler beim Lesen der Datei " + path + ": " + e.getMessage());
@@ -110,10 +118,10 @@ public class Vokabeltrainer {
             falscheVokabeln.toFirst();
             while (falscheVokabeln.hasAccess()) {
                 if (falscheVokabeln.getContent() == vokabel) {
-                    neueVokabeln.remove();
+                    falscheVokabeln.remove();
                 }
 
-                neueVokabeln.next();
+                falscheVokabeln.next();
             }
             
             boolean contains = false;
@@ -125,14 +133,6 @@ public class Vokabeltrainer {
             }
             
             if (!(contains)) bekannteVokabeln.append(vokabel);
-
-            alleVokabeln.toFirst();
-            while (alleVokabeln.hasAccess()) {
-                if (alleVokabeln.getContent() == vokabel) {
-                    alleVokabeln.getContent().setBekannt(true);
-                }
-                alleVokabeln.next();
-            }
             
         } 
         else {
@@ -145,10 +145,18 @@ public class Vokabeltrainer {
             }
             
             if (!(contains)) falscheVokabeln.append(vokabel);
+
+
+            bekannteVokabeln.toFirst();
+            while (bekannteVokabeln.hasAccess()) {
+                if (bekannteVokabeln.getContent() == vokabel) {
+                    bekannteVokabeln.remove();
+                }
+
+                bekannteVokabeln.next();
+            }
             
         }
-
-        this.speichereVokabeln(); // ToDo: ACHTUNG INEFFIZIENT - Die ganzen Vokabeln werden nach jeder Beantwortung neu gespeichert
 
     }
 
@@ -156,11 +164,11 @@ public class Vokabeltrainer {
         try {
             FileWriter writer = new FileWriter(datei);
 
-            alleVokabelnSchreiben.toFirst();
-            while (alleVokabelnSchreiben.hasAccess()) {
-                Vokabel v = alleVokabelnSchreiben.getContent();
+            alleVokabeln.toFirst();
+            while (alleVokabeln.hasAccess()) {
+                Vokabel v = alleVokabeln.getContent();
                 writer.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
-                alleVokabelnSchreiben.next();
+                alleVokabeln.next();
             }
 
             writer.close();
@@ -188,6 +196,18 @@ public class Vokabeltrainer {
             }
             
             writer2.close();
+
+            FileWriter writer3 = new FileWriter(falsch);
+
+            bekannteVokabeln.toFirst();
+            while (bekannteVokabeln.hasAccess()) {
+                Vokabel v = bekannteVokabeln.getContent();
+                writer2.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
+                bekannteVokabeln.next();
+            }
+
+            writer3.close();
+
 
         } catch (IOException e) {
             System.out.println("Fehler beim Schreiben der Datei " + datei.getName() + ": " + e.getMessage());
