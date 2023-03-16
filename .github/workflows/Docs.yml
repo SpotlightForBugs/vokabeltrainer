@@ -23,10 +23,58 @@ jobs:
       run: javadoc -d docs -sourcepath . -subpackages .
 
     - name: Commit JavaDocs
-      run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-        git checkout -b docs
-        git add docs
-        git commit -m "Generate JavaDocs"
-        git push origin docs
+      uses: actions/github-script@v4
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const commitMessage = "Generate JavaDocs";
+          const branchName = "docs";
+          const filesToAdd = ["docs"];
+          const currentBranch = context.payload.ref.replace("refs/heads/", "");
+
+          if (currentBranch !== "ak") {
+            console.log("JavaDocs generation skipped for branch: " + currentBranch);
+            return;
+          }
+
+          async function commitFiles() {
+            try {
+              await github.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `refs/heads/${branchName}`,
+                sha: context.sha
+              });
+
+              const commit = await github.git.createCommit({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                message: commitMessage,
+                tree: context.payload.repository.tree_id,
+                parents: [context.payload.before],
+                author: {
+                  name: "GitHub Actions",
+                  email: "actions@github.com"
+                },
+                committer: {
+                  name: "GitHub Actions",
+                  email: "actions@github.com"
+                },
+                signature: ""
+              });
+
+              await github.git.updateRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `refs/heads/${branchName}`,
+                sha: commit.data.sha
+              });
+
+              console.log("JavaDocs generated and committed successfully!");
+            } catch (error) {
+              console.log(error);
+              throw new Error("Failed to commit JavaDocs");
+            }
+          }
+
+          await commitFiles();
