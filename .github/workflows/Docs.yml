@@ -1,4 +1,4 @@
-name: Generate JavaDocs
+name: Generate JavaDocs and commit to docs branch
 
 on:
   push:
@@ -6,21 +6,15 @@ on:
       - ak
 
 jobs:
-  build:
+  generate-javadoc:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Set up JDK
-      uses: actions/setup-java@v2
-      with:
-        java-version: '11'
-        distribution: 'adopt'
-
-    - name: Generate JavaDocs
-      run: javadoc -d docs -sourcepath . -subpackages .
+      
+    - name: Build and run Docker container
+      run: |
+        docker run --rm -it -v ${PWD}:/app -w /app openjdk:11 bash -c "apt-get update && apt-get install -y javadoc && javadoc -d docs -sourcepath . -subpackages ."
 
     - name: Commit JavaDocs
       uses: actions/github-script@v4
