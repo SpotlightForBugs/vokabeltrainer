@@ -3,12 +3,7 @@ import jdk.jfr.ContentType;
 
 public class Util {
 
-  // the shuffle list method shuffles the List (file List.java)
-  // the remove method removes the element at the current position (file List.java)
-  // we dont have a size method in List.java, so we use the hasAccess method
-  // to check if we are at the end of the list
-  // we also have to go to the first element of the list, so we use next() toFirst()
-  // we have to determine the size ourselves, so we use a counter
+
 
   public static int size(List<Vokabel> list) {
     int counter = 0;

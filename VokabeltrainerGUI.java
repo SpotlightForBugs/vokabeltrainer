@@ -8,11 +8,21 @@ import javax.swing.*;
 
 public class VokabeltrainerGUI extends JFrame {
 
+  /**
+   * Der Vokabeltrainer, der von dieser GUI verwaltet wird.
+   *
+   * <p>Die GUI kann den Vokabeltrainer nur über die Methoden der Klasse Vokabeltrainer steuern.
+   */
   private Vokabeltrainer trainer;
   private JTextArea ausgabe;
   private JComboBox<String> modusAuswahl;
   private JButton abfrageButton, bearbeitenButton;
   private JRadioButton deNachEnRadio, enNachDeRadio;
+
+    /**
+     * Erzeugt eine neue GUI für den übergebenen Vokabeltrainer.
+     * @param trainer Der Vokabeltrainer, der von dieser GUI verwaltet wird.
+     */
 
   public VokabeltrainerGUI(Vokabeltrainer trainer) {
     super("Vokabeltrainer");
@@ -59,6 +69,13 @@ public class VokabeltrainerGUI extends JFrame {
     setSize(600, 400);
     setVisible(true);
   }
+
+    /**
+     * Event-Handler für den Abfrage-Button.
+     *
+     * <p>Der Abfrage-Button startet eine Abfrage mit den Vokabeln, die derzeit im Modus ausgewählt
+     * sind.
+     */
 
   private class AbfrageButtonHandler implements ActionListener {
     public void actionPerformed(ActionEvent e) {
@@ -117,6 +134,12 @@ public class VokabeltrainerGUI extends JFrame {
     }
   }
 
+    /**
+         * Event-Handler für den Bearbeiten-Button.
+         *
+         * <p>Der Bearbeiten-Button öffnet ein Dialogfenster, in dem die Vokabeln bearbeitet werden können.
+         */
+
   private class BearbeitenButtonHandler implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       JDialog dialog = new JDialog(VokabeltrainerGUI.this, "Vokabeln bearbeiten", true);
@@ -143,6 +166,12 @@ public class VokabeltrainerGUI extends JFrame {
     }
   }
 
+    /**
+     * Event-Handler für den Speichern-Button.
+     *
+     * <p>Der Speichern-Button speichert die Änderungen an einer Vokabel.
+     */
+
   private class SpeichernButtonHandler implements ActionListener {
     private Vokabel vokabel;
     private JTextField englischField;
@@ -152,6 +181,12 @@ public class VokabeltrainerGUI extends JFrame {
       this.englischField = englischField;
     }
 
+    /**
+     * Speichert die Änderungen an der Vokabel.
+     *
+     * @param e das ActionEvent
+     */
+
     public void actionPerformed(ActionEvent e) {
       String neuesEnglisch = englischField.getText();
       vokabel.setEnglisch(neuesEnglisch);
@@ -159,6 +194,11 @@ public class VokabeltrainerGUI extends JFrame {
     }
   }
 
+    /**
+     * Startet den Vokabeltrainer.
+     *
+     * @param args Kommandozeilenargumente
+     */
   public static void main(String[] args) {
     Vokabeltrainer trainer = new Vokabeltrainer();
     trainer.ladeVokabeln("vok1.txt");
