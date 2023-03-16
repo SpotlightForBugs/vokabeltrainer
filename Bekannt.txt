@@ -1,0 +1,2 @@
+Tisch;Table
+Hund;Dog
