@@ -1,16 +1,31 @@
-name: Deploy Javadoc
+name: Generate JavaDocs
 
 on:
   push:
+    branches:
+      - main
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Deploy JavaDoc 🚀
-        uses: MathieuSoysal/Javadoc-publisher.yml@v2.3.0
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          javadoc-branch: docs
-          java-version: 17
-          target-folder: Docs
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+
+    - name: Generate JavaDocs
+      run: javadoc -d docs -sourcepath . -subpackages .
+
+    - name: Commit JavaDocs
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git checkout -b docs
+        git add docs
+        git commit -m "Generate JavaDocs"
+        git push origin docs
