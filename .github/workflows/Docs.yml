@@ -3,7 +3,7 @@ name: Generate JavaDocs
 on:
   push:
     branches:
-      - main
+      - ak
 
 jobs:
   build:
