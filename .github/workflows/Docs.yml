@@ -1,4 +1,4 @@
-name: Generate JavaDocs and commit to docs branch
+name: Generate JavaDocs
 
 on:
   push:
@@ -6,69 +6,24 @@ on:
       - ak
 
 jobs:
-  generate-javadoc:
+  generate-javadocs:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      
-    - name: Build and run Docker container
-      run: |
-        docker run --rm -v ${PWD}:/app -w /app openjdk:11 bash -c "apt-get update && apt-get install -y software-properties-common && add-apt-repository main && apt-get update && apt-get install -y default-jdk && javadoc -d docs -sourcepath . -subpackages ."
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Commit JavaDocs
-      uses: actions/github-script@v4
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const commitMessage = "Generate JavaDocs";
-          const branchName = "docs";
-          const filesToAdd = ["docs"];
-          const currentBranch = context.payload.ref.replace("refs/heads/", "");
+      - name: Install JDK and generate JavaDocs
+        run: |
+          find . -name '*.java' -print
+          sudo apt-get update
+          sudo apt-get install -y default-jdk
+          javadoc -d docs -sourcepath . -subpackages .
 
-          if (currentBranch !== "ak") {
-            console.log("JavaDocs generation skipped for branch: " + currentBranch);
-            return;
-          }
-
-          async function commitFiles() {
-            try {
-              await github.git.createRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: `refs/heads/${branchName}`,
-                sha: context.sha
-              });
-
-              const commit = await github.git.createCommit({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                message: commitMessage,
-                tree: context.payload.repository.tree_id,
-                parents: [context.payload.before],
-                author: {
-                  name: "GitHub Actions",
-                  email: "actions@github.com"
-                },
-                committer: {
-                  name: "GitHub Actions",
-                  email: "actions@github.com"
-                },
-                signature: ""
-              });
-
-              await github.git.updateRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: `refs/heads/${branchName}`,
-                sha: commit.data.sha
-              });
-
-              console.log("JavaDocs generated and committed successfully!");
-            } catch (error) {
-              console.log(error);
-              throw new Error("Failed to commit JavaDocs");
-            }
-          }
-
-          await commitFiles();
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: GitHub Actions
+          author_email: actions@github.com
+          message: "Auto-generated JavaDocs"
+          add: 'docs/'
+          branch: docs
