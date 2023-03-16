@@ -14,7 +14,7 @@ jobs:
       
     - name: Build and run Docker container
       run: |
-        docker run --rm -v ${PWD}:/app -w /app openjdk:11 bash -c "apt-get update && apt-get install -y software-properties-common && add-apt-repository main && apt-get update && apt-get install -y default-jdk && apt-get install -y javadoc && javadoc -d docs -sourcepath . -subpackages ."
+        docker run --rm -v ${PWD}:/app -w /app openjdk:11 bash -c "apt-get update && apt-get install -y software-properties-common && add-apt-repository main && apt-get update && apt-get install -y default-jdk && javadoc -d docs -sourcepath . -subpackages ."
 
     - name: Commit JavaDocs
       uses: actions/github-script@v4
