@@ -8,6 +8,8 @@ public class Vokabeltrainer {
 
     private String path;
     private List<Vokabel> alleVokabeln;
+    private List<Vokabel> alleVokabelnSchreiben;
+
     private List<Vokabel> bekannteVokabeln;
     private List<Vokabel> falscheVokabeln;
     private List<Vokabel> neueVokabeln;
@@ -20,6 +22,7 @@ public class Vokabeltrainer {
         this.path = path;
 
         alleVokabeln = new List<Vokabel>();
+        alleVokabelnSchreiben = new List<Vokabel>();
         bekannteVokabeln = new List<Vokabel>();
         falscheVokabeln = new List<Vokabel>();
         neueVokabeln = new List<Vokabel>();
@@ -32,6 +35,7 @@ public class Vokabeltrainer {
     public void ladeVokabeln() {
 
         alleVokabeln = new List<Vokabel>();
+        alleVokabelnSchreiben = new List<Vokabel>();
         bekannteVokabeln = new List<Vokabel>();
         falscheVokabeln = new List<Vokabel>();
         neueVokabeln = new List<Vokabel>();
@@ -47,28 +51,29 @@ public class Vokabeltrainer {
                 }
             }
             scanner.close();
+            alleVokabelnSchreiben = alleVokabeln;
 
-            Scanner scanner2 = new Scanner(neu);
-            while (scanner2.hasNextLine()) {
-                String line = scanner.nextLine();
+            Scanner scanner1 = new Scanner(neu);
+            while (scanner1.hasNextLine()) {
+                String line = scanner1.nextLine();
                 String[] parts = line.split(";");
                 if (parts.length == 2) {
                     Vokabel v = new Vokabel(parts[0], parts[1]);
                     neueVokabeln.append(v);
                 }
             }
-            scanner2.close();
+            scanner1.close();
 
-            Scanner scanner3 = new Scanner(falsch);
-            while (scanner3.hasNextLine()) {
-                String line = scanner.nextLine();
+            Scanner scanner2 = new Scanner(falsch);
+            while (scanner2.hasNextLine()) {
+                String line = scanner2.nextLine();
                 String[] parts = line.split(";");
                 if (parts.length == 2) {
                     Vokabel v = new Vokabel(parts[0], parts[1]);
                     falscheVokabeln.append(v);
                 }
             }
-            scanner3.close();
+            scanner2.close();
 
         } catch (FileNotFoundException e) {
             System.out.println("Fehler beim Lesen der Datei " + path + ": " + e.getMessage());
@@ -91,7 +96,7 @@ public class Vokabeltrainer {
         return neueVokabeln;
     }
 
-    public void beantworteVokabel(Vokabel vokabel, boolean richtigBeantwortet) {
+    public void beantworteVokabel(Vokabel vokabel, boolean richtigBeantwortet) { // ToDo: Modi einfügen, sodass nicht alle immer durchlaufen werden müssen
         if (richtigBeantwortet) {
 
             neueVokabeln.toFirst();
@@ -99,7 +104,15 @@ public class Vokabeltrainer {
                 if (neueVokabeln.getContent() == vokabel) {
                     neueVokabeln.remove();
                 }
-                
+                neueVokabeln.next();
+            }
+
+            falscheVokabeln.toFirst();
+            while (falscheVokabeln.hasAccess()) {
+                if (falscheVokabeln.getContent() == vokabel) {
+                    neueVokabeln.remove();
+                }
+
                 neueVokabeln.next();
             }
             
@@ -112,6 +125,14 @@ public class Vokabeltrainer {
             }
             
             if (!(contains)) bekannteVokabeln.append(vokabel);
+
+            alleVokabeln.toFirst();
+            while (alleVokabeln.hasAccess()) {
+                if (alleVokabeln.getContent() == vokabel) {
+                    alleVokabeln.getContent().setBekannt(true);
+                }
+                alleVokabeln.next();
+            }
             
         } 
         else {
@@ -126,17 +147,20 @@ public class Vokabeltrainer {
             if (!(contains)) falscheVokabeln.append(vokabel);
             
         }
+
+        this.speichereVokabeln(); // ToDo: ACHTUNG INEFFIZIENT - Die ganzen Vokabeln werden nach jeder Beantwortung neu gespeichert
+
     }
 
     public void speichereVokabeln() {
         try {
             FileWriter writer = new FileWriter(datei);
 
-            alleVokabeln.toFirst();
-            while (alleVokabeln.hasAccess()) {
-                Vokabel v = alleVokabeln.getContent();
+            alleVokabelnSchreiben.toFirst();
+            while (alleVokabelnSchreiben.hasAccess()) {
+                Vokabel v = alleVokabelnSchreiben.getContent();
                 writer.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
-                alleVokabeln.next();
+                alleVokabelnSchreiben.next();
             }
 
             writer.close();

@@ -97,6 +97,7 @@ public class VokabeltrainerGUI extends JFrame {
                 if (antwort == null) {
 // Abbruch durch Benutzer
                     ausgabe.setText("Abbruch durch Benutzer.");
+                    trainer.speichereVokabeln();
                     return;
                 }
                 if (antwort.equalsIgnoreCase(deNachEn ? v.getEnglisch() : v.getDeutsch())) {
@@ -108,7 +109,7 @@ public class VokabeltrainerGUI extends JFrame {
                     trainer.beantworteVokabel(v, false);
                 }
             }
-            ausgabe.append("\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
+            ausgabe.append("\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet."); // ToDo: Problem mit 1/0 richtig
         }
     }
 
