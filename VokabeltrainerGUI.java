@@ -14,6 +14,8 @@ public class VokabeltrainerGUI extends JFrame {
   private JButton abfrageButton, bearbeitenButton;
   private JRadioButton deNachEnRadio, enNachDeRadio;
 
+  private static String path = "";
+
   public VokabeltrainerGUI(Vokabeltrainer trainer) {
     super("Vokabeltrainer");
     this.trainer = trainer;
@@ -160,8 +162,8 @@ public class VokabeltrainerGUI extends JFrame {
   }
 
   public static void main(String[] args) {
-    Vokabeltrainer trainer = new Vokabeltrainer();
-    trainer.ladeVokabeln("vok1.txt");
+    Vokabeltrainer trainer = new Vokabeltrainer(path);
+    trainer.ladeVokabeln();
     new VokabeltrainerGUI(trainer);
   }
 }

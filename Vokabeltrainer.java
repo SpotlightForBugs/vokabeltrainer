@@ -9,21 +9,37 @@ public class Vokabeltrainer {
   private List<Vokabel> bekannteVokabeln;
   private List<Vokabel> falscheVokabeln;
   private List<Vokabel> neueVokabeln;
-  private File datei;
 
-  public Vokabeltrainer() {
+  private File datei;
+  private File neu;
+  private File bekannt;
+  private File falsch;
+
+  private String path;
+
+
+  public Vokabeltrainer(String path) {
+
+    this.path = path;
+
     alleVokabeln = new List<Vokabel>();
     bekannteVokabeln = new List<Vokabel>();
     falscheVokabeln = new List<Vokabel>();
     neueVokabeln = new List<Vokabel>();
+
   }
 
-  public void ladeVokabeln(String dateiname) {
+  public void ladeVokabeln() {
     alleVokabeln = new List<Vokabel>();
     bekannteVokabeln = new List<Vokabel>();
     falscheVokabeln = new List<Vokabel>();
     neueVokabeln = new List<Vokabel>();
-    datei = new File(dateiname);
+
+    datei = new File(path+"Alle.txt");
+    neu = new File(path+"Neu.txt");
+    bekannt = new File(path+"Bekannt.txt");
+    falsch = new File(path+"Falsch.txt");
+
     try {
       Scanner scanner = new Scanner(datei);
       while (scanner.hasNextLine()) {
@@ -37,7 +53,7 @@ public class Vokabeltrainer {
       }
       scanner.close();
     } catch (FileNotFoundException e) {
-      System.out.println("Fehler beim Lesen der Datei " + dateiname + ": " + e.getMessage());
+      System.out.println("Fehler beim Lesen der Datei " + datei.getName() + ": " + e.getMessage());
     }
   }
 
