@@ -14,6 +14,8 @@ public class VokabeltrainerGUI extends JFrame {
   private JButton abfrageButton, bearbeitenButton;
   private JRadioButton deNachEnRadio, enNachDeRadio;
 
+  private static String path = "";
+
   public VokabeltrainerGUI(Vokabeltrainer trainer) {
     super("Vokabeltrainer");
     this.trainer = trainer;
@@ -86,20 +88,22 @@ public class VokabeltrainerGUI extends JFrame {
         return;
       }
       ausgabe.setText("");
-      vokabeln = Util.shuffle(vokabeln);
+      // vokabeln = Util.shuffle(vokabeln);
       int numCorrect = 0;
       vokabeln.toFirst();
       while (vokabeln.hasAccess()) {
         Vokabel v = vokabeln.getContent();
-        vokabeln.next();
 
         String frage = deNachEn ? v.getDeutsch() : v.getEnglisch();
         String antwort = JOptionPane.showInputDialog(null, frage);
+
         if (antwort == null) {
           // Abbruch durch Benutzer
           ausgabe.setText("Abbruch durch Benutzer.");
+          trainer.speichereVokabeln();
           return;
         }
+
         if (antwort.equalsIgnoreCase(deNachEn ? v.getEnglisch() : v.getDeutsch())) {
           ausgabe.append("Richtig!\n");
           numCorrect++;
@@ -111,9 +115,15 @@ public class VokabeltrainerGUI extends JFrame {
                   + " gewesen.\n");
           trainer.beantworteVokabel(v, false);
         }
+
+        vokabeln.next();
       }
+
       ausgabe.append(
           "\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
+
+      // Speichern der Vokabeln nach Abfrage
+      trainer.speichereVokabeln();
     }
   }
 
@@ -160,8 +170,8 @@ public class VokabeltrainerGUI extends JFrame {
   }
 
   public static void main(String[] args) {
-    Vokabeltrainer trainer = new Vokabeltrainer();
-    trainer.ladeVokabeln("vok1.txt");
+    Vokabeltrainer trainer = new Vokabeltrainer(path);
+    trainer.ladeVokabeln();
     new VokabeltrainerGUI(trainer);
   }
 }
