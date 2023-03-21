@@ -104,19 +104,44 @@ public class Vokabeltrainer {
     return alleVokabeln;
   }
 
+  // Gibt einen Klon zurück, um Probleme mit Referenzen zu vermeiden
   public List<Vokabel> getBekannteVokabeln() {
-    return bekannteVokabeln;
+    List<Vokabel> returnList = new List<Vokabel>();
+
+    bekannteVokabeln.toFirst();
+    while (bekannteVokabeln.hasAccess()) {
+      returnList.append(bekannteVokabeln.getContent());
+      bekannteVokabeln.next();
+    }
+    return returnList;
   }
 
+  // Gibt einen Klon zurück, um Probleme mit Referenzen zu vermeiden
   public List<Vokabel> getFalscheVokabeln() {
-    return falscheVokabeln;
+    List<Vokabel> returnList = new List<Vokabel>();
+
+    falscheVokabeln.toFirst();
+    while (falscheVokabeln.hasAccess()) {
+      returnList.append(falscheVokabeln.getContent());
+      falscheVokabeln.next();
+    }
+    return returnList;
   }
 
+  // Gibt einen Klon zurück, um Probleme mit Referenzen zu vermeiden
   public List<Vokabel> getNeueVokabeln() {
-    return neueVokabeln;
+    List<Vokabel> returnList = new List<Vokabel>();
+
+    neueVokabeln.toFirst();
+    while (neueVokabeln.hasAccess()) {
+      returnList.append(neueVokabeln.getContent());
+      neueVokabeln.next();
+    }
+    return returnList;
   }
 
   public void beantworteVokabel(Vokabel vokabel, boolean richtigBeantwortet) {
+
     if (richtigBeantwortet) {
 
       neueVokabeln.toFirst();
@@ -146,8 +171,9 @@ public class Vokabeltrainer {
         falscheVokabeln.next();
       }
 
-    } else {
-
+    }
+    else {
+      // Füge Vokabel zu falschen Vokabeln hinzu
       boolean contains = false;
 
       while (falscheVokabeln.hasAccess()) {
@@ -156,6 +182,7 @@ public class Vokabeltrainer {
       }
 
       if (!(contains)) falscheVokabeln.append(vokabel);
+
 
       // Entferne Vokabel aus bekannter Liste
       bekannteVokabeln.toFirst();
