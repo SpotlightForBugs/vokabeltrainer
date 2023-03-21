@@ -17,7 +17,6 @@ public class Vokabeltrainer {
 
   private String path;
 
-
   public Vokabeltrainer(String path) {
 
     this.path = path;
@@ -26,7 +25,6 @@ public class Vokabeltrainer {
     bekannteVokabeln = new List<Vokabel>();
     falscheVokabeln = new List<Vokabel>();
     neueVokabeln = new List<Vokabel>();
-
   }
 
   public void ladeVokabeln() {
@@ -35,10 +33,10 @@ public class Vokabeltrainer {
     falscheVokabeln = new List<Vokabel>();
     neueVokabeln = new List<Vokabel>();
 
-    datei = new File(path+"Alle.txt");
-    neu = new File(path+"Neu.txt");
-    bekannt = new File(path+"Bekannt.txt");
-    falsch = new File(path+"Falsch.txt");
+    datei = new File(path + "Alle.txt");
+    neu = new File(path + "Neu.txt");
+    bekannt = new File(path + "Bekannt.txt");
+    falsch = new File(path + "Falsch.txt");
 
     try {
       Scanner alle = new Scanner(datei);
@@ -82,7 +80,8 @@ public class Vokabeltrainer {
       }
       bekannte.close();
     } catch (FileNotFoundException e) {
-      System.out.println("Fehler beim Lesen der Datei " + bekannt.getName() + ": " + e.getMessage());
+      System.out.println(
+          "Fehler beim Lesen der Datei " + bekannt.getName() + ": " + e.getMessage());
     }
 
     try {
@@ -193,55 +192,53 @@ public class Vokabeltrainer {
           "Fehler beim Schreiben der Datei " + datei.getName() + ": " + e.getMessage());
     }
 
-    //Speichere bekannte Vokabeln
+    // Speichere bekannte Vokabeln
     try {
-        FileWriter bekanntewriter = new FileWriter(bekannt);
+      FileWriter bekanntewriter = new FileWriter(bekannt);
 
-        bekannteVokabeln.toFirst();
-        while (bekannteVokabeln.hasAccess()) {
-            Vokabel v = bekannteVokabeln.getContent();
-            bekanntewriter.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
-            bekannteVokabeln.next();
-        }
+      bekannteVokabeln.toFirst();
+      while (bekannteVokabeln.hasAccess()) {
+        Vokabel v = bekannteVokabeln.getContent();
+        bekanntewriter.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
+        bekannteVokabeln.next();
+      }
 
-        bekanntewriter.close();
-        } catch (IOException e) {
-        System.out.println(
-            "Fehler beim Schreiben der Datei " + bekannt.getName() + ": " + e.getMessage());
+      bekanntewriter.close();
+    } catch (IOException e) {
+      System.out.println(
+          "Fehler beim Schreiben der Datei " + bekannt.getName() + ": " + e.getMessage());
     }
 
-    //Speichere neue Vokabeln
+    // Speichere neue Vokabeln
     try {
       FileWriter neuewriter = new FileWriter(neu);
 
       neueVokabeln.toFirst();
-        while (neueVokabeln.hasAccess()) {
-            Vokabel v = neueVokabeln.getContent();
-            neuewriter.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
-            neueVokabeln.next();
-        }
-        neuewriter.close();
-    }
-    catch (IOException e) {
-        System.out.println(
-            "Fehler beim Schreiben der Datei " + neu.getName() + ": " + e.getMessage());
+      while (neueVokabeln.hasAccess()) {
+        Vokabel v = neueVokabeln.getContent();
+        neuewriter.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
+        neueVokabeln.next();
+      }
+      neuewriter.close();
+    } catch (IOException e) {
+      System.out.println(
+          "Fehler beim Schreiben der Datei " + neu.getName() + ": " + e.getMessage());
     }
 
-    //Speichere falsche Vokabeln
+    // Speichere falsche Vokabeln
     try {
       FileWriter falschwriter = new FileWriter(falsch);
 
       falscheVokabeln.toFirst();
-        while (falscheVokabeln.hasAccess()) {
-            Vokabel v = falscheVokabeln.getContent();
-            falschwriter.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
-            falscheVokabeln.next();
-        }
-        falschwriter.close();
-    }
-    catch (IOException e) {
+      while (falscheVokabeln.hasAccess()) {
+        Vokabel v = falscheVokabeln.getContent();
+        falschwriter.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
+        falscheVokabeln.next();
+      }
+      falschwriter.close();
+    } catch (IOException e) {
       System.out.println(
-              "Fehler beim Schreiben der Datei " + falsch.getName() + ": " + e.getMessage());
+          "Fehler beim Schreiben der Datei " + falsch.getName() + ": " + e.getMessage());
     }
   }
 }

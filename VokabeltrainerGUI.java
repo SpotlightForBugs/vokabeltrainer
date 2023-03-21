@@ -88,7 +88,7 @@ public class VokabeltrainerGUI extends JFrame {
         return;
       }
       ausgabe.setText("");
-      //vokabeln = Util.shuffle(vokabeln);
+      // vokabeln = Util.shuffle(vokabeln);
       int numCorrect = 0;
       vokabeln.toFirst();
       while (vokabeln.hasAccess()) {
@@ -108,21 +108,23 @@ public class VokabeltrainerGUI extends JFrame {
           ausgabe.append("Richtig!\n");
           numCorrect++;
           trainer.beantworteVokabel(v, true);
-        }
-        else {
-          ausgabe.append("Falsch! Richtig wäre " + (deNachEn ? v.getEnglisch() : v.getDeutsch()) + " gewesen.\n");
+        } else {
+          ausgabe.append(
+              "Falsch! Richtig wäre "
+                  + (deNachEn ? v.getEnglisch() : v.getDeutsch())
+                  + " gewesen.\n");
           trainer.beantworteVokabel(v, false);
         }
 
         vokabeln.next();
       }
 
-      ausgabe.append("\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
+      ausgabe.append(
+          "\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
 
       // Speichern der Vokabeln nach Abfrage
       trainer.speichereVokabeln();
     }
-
   }
 
   private class BearbeitenButtonHandler implements ActionListener {
