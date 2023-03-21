@@ -90,6 +90,7 @@ public class VokabeltrainerGUI extends JFrame {
       }
       ausgabe.setText("");
       // vokabeln = Util.shuffle(vokabeln);
+      int size = Util.size(vokabeln);
       int numCorrect = 0;
       vokabeln.toFirst();
       while (vokabeln.hasAccess()) {
@@ -117,7 +118,7 @@ public class VokabeltrainerGUI extends JFrame {
         vokabeln.next();
       }
 
-      ausgabe.append("\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
+      ausgabe.append("\nErgebnis: " + numCorrect + "/" + size + " richtig beantwortet.");
 
       // Speichern der Vokabeln nach Abfrage
       trainer.speichereVokabeln();
