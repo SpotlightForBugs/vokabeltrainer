@@ -65,9 +65,11 @@ public class VokabeltrainerGUI extends JFrame {
 
   private class AbfrageButtonHandler implements ActionListener {
     public void actionPerformed(ActionEvent e) {
+
       int modusIndex = modusAuswahl.getSelectedIndex();
-      boolean deNachEn = deNachEnRadio.isSelected();
+
       List<Vokabel> vokabeln;
+
       switch (modusIndex) {
         case 0:
           vokabeln = trainer.getAlleVokabeln();
@@ -84,44 +86,72 @@ public class VokabeltrainerGUI extends JFrame {
         default:
           return;
       }
+
       if (vokabeln.isEmpty()) {
         ausgabe.setText("Keine Vokabeln vorhanden.");
         return;
       }
+
       ausgabe.setText("");
+
       // vokabeln = Util.shuffle(vokabeln);
+
       int size = Util.size(vokabeln);
       int numCorrect = 0;
+
       vokabeln.toFirst();
+
       while (vokabeln.hasAccess()) {
+
         Vokabel v = vokabeln.getContent();
 
-        String frage = deNachEn ? v.getDeutsch() : v.getEnglisch();
-        String antwort = JOptionPane.showInputDialog(null, frage);
+        String antwort = abfrage(v);
 
         if (antwort == null) {
-          // Abbruch durch Benutzer
           ausgabe.setText("Abbruch durch Benutzer.");
           trainer.speichereVokabeln();
           return;
         }
 
-        if (antwort.equalsIgnoreCase(deNachEn ? v.getEnglisch() : v.getDeutsch())) {
-          ausgabe.append("Richtig!\n");
-          numCorrect++;
-          trainer.beantworteVokabel(v, true);
-        } else {
-          ausgabe.append("Falsch! Richtig wäre " + (deNachEn ? v.getEnglisch() : v.getDeutsch()) + " gewesen.\n");
-          trainer.beantworteVokabel(v, false);
-        }
+        if (evaluate(antwort, v)) numCorrect++;
 
         vokabeln.next();
       }
 
+      // Ausgabe der Ergebnisse
       ausgabe.append("\nErgebnis: " + numCorrect + "/" + size + " richtig beantwortet.");
 
       // Speichern der Vokabeln nach Abfrage
       trainer.speichereVokabeln();
+    }
+
+    public String abfrage(Vokabel v) {
+
+      boolean deNachEn = deNachEnRadio.isSelected();
+
+      String frage = deNachEn ? v.getDeutsch() : v.getEnglisch();
+      String antwort = JOptionPane.showInputDialog(null, frage);
+
+      return antwort;
+
+    }
+
+    public boolean evaluate(String antwort, Vokabel v) {
+
+      boolean deNachEn = deNachEnRadio.isSelected();
+
+      if (antwort.equalsIgnoreCase(deNachEn ? v.getEnglisch() : v.getDeutsch())) {
+        ausgabe.append("Richtig!\n");
+        trainer.beantworteVokabel(v, true);
+        return true;
+      }
+
+      else {
+        ausgabe.append("Falsch! Richtig wäre " + (deNachEn ? v.getEnglisch() : v.getDeutsch()) + " gewesen.\n");
+        trainer.beantworteVokabel(v, false);
+        return false;
+      }
+
     }
   }
 
