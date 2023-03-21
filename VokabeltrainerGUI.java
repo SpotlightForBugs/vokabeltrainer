@@ -150,7 +150,13 @@ public class VokabeltrainerGUI extends JFrame {
 
         // Knöpfe für Speichern und Entfernen
         JButton speichernButton = new JButton("Speichern");
-        speichernButton.addActionListener(new SpeichernButtonHandler(v, englischField));
+        speichernButton.addActionListener(
+            new ActionListener() {
+              public void actionPerformed(ActionEvent e) {
+                v.setEnglisch(englischField.getText());
+                trainer.speichereVokabeln();
+              }
+            });
 
         JButton delButton = new JButton("Entfernen");
         delButton.addActionListener(
@@ -175,22 +181,6 @@ public class VokabeltrainerGUI extends JFrame {
       dialog.add(scrollPane);
       dialog.pack();
       dialog.setVisible(true);
-    }
-  }
-
-  private class SpeichernButtonHandler implements ActionListener {
-    private Vokabel vokabel;
-    private JTextField englischField;
-
-    public SpeichernButtonHandler(Vokabel vokabel, JTextField englischField) {
-      this.vokabel = vokabel;
-      this.englischField = englischField;
-    }
-
-    public void actionPerformed(ActionEvent e) {
-      String neuesEnglisch = englischField.getText();
-      vokabel.setEnglisch(neuesEnglisch);
-      trainer.speichereVokabeln();
     }
   }
 
