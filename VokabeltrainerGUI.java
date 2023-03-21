@@ -129,10 +129,16 @@ public class VokabeltrainerGUI extends JFrame {
 
   private class BearbeitenButtonHandler implements ActionListener {
     public void actionPerformed(ActionEvent e) {
+      // Dialog erstellen
       JDialog dialog = new JDialog(VokabeltrainerGUI.this, "Vokabeln bearbeiten", true);
+
+      // Tabellen basierte Oberfläche erstellen
       JPanel panel = new JPanel(new GridLayout(0, 2));
+
+      // Vokabeln auslesen
       List<Vokabel> alleVokabeln = trainer.getAlleVokabeln();
 
+      // Vokabeln in die Oberfläche einfügen
       alleVokabeln.toFirst();
       while (alleVokabeln.hasAccess()) {
 
@@ -162,7 +168,10 @@ public class VokabeltrainerGUI extends JFrame {
         alleVokabeln.next();
       }
 
+      // Tabellen basierte Oberfläche in einen ScrollPane packen
       JScrollPane scrollPane = new JScrollPane(panel);
+
+      // ScrollPane in den Dialog einfügen
       dialog.add(scrollPane);
       dialog.pack();
       dialog.setVisible(true);
