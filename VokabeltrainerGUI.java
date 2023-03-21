@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
 import javax.swing.*;
 // import Collections; // Import der java.util.Collections-Klasse
 // Import der java.util.Collections-Klasse
@@ -109,18 +110,14 @@ public class VokabeltrainerGUI extends JFrame {
           numCorrect++;
           trainer.beantworteVokabel(v, true);
         } else {
-          ausgabe.append(
-              "Falsch! Richtig wäre "
-                  + (deNachEn ? v.getEnglisch() : v.getDeutsch())
-                  + " gewesen.\n");
+          ausgabe.append("Falsch! Richtig wäre " + (deNachEn ? v.getEnglisch() : v.getDeutsch()) + " gewesen.\n");
           trainer.beantworteVokabel(v, false);
         }
 
         vokabeln.next();
       }
 
-      ausgabe.append(
-          "\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
+      ausgabe.append("\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
 
       // Speichern der Vokabeln nach Abfrage
       trainer.speichereVokabeln();
@@ -129,44 +126,96 @@ public class VokabeltrainerGUI extends JFrame {
 
   private class BearbeitenButtonHandler implements ActionListener {
     public void actionPerformed(ActionEvent e) {
-      JDialog dialog = new JDialog(VokabeltrainerGUI.this, "Vokabeln bearbeiten", true);
-      JPanel panel = new JPanel(new GridLayout(0, 2));
-      List<Vokabel> alleVokabeln = trainer.getAlleVokabeln();
-
-      alleVokabeln.toFirst();
-      while (alleVokabeln.hasAccess()) {
-        Vokabel v = alleVokabeln.getContent();
-        panel.add(new JLabel(v.getDeutsch() + ":"));
-        JTextField englischField = new JTextField(v.getEnglisch());
-        panel.add(englischField);
-        JButton speichernButton = new JButton("Speichern");
-        speichernButton.addActionListener(new SpeichernButtonHandler(v, englischField));
-        panel.add(speichernButton);
-        panel.add(new JLabel(""));
-        alleVokabeln.next();
-      }
-
-      JScrollPane scrollPane = new JScrollPane(panel);
-      dialog.add(scrollPane);
-      dialog.pack();
-      dialog.setVisible(true);
+        editGUI();
     }
   }
 
-  private class SpeichernButtonHandler implements ActionListener {
-    private Vokabel vokabel;
-    private JTextField englischField;
+  private void editGUI() {
+    // Dialog erstellen
+    JDialog dialog = new JDialog(VokabeltrainerGUI.this, "Vokabeln bearbeiten", true);
 
-    public SpeichernButtonHandler(Vokabel vokabel, JTextField englischField) {
-      this.vokabel = vokabel;
-      this.englischField = englischField;
+    // Tabellen basierte Oberfläche erstellen
+    JPanel panel = new JPanel(new GridLayout(0, 2));
+
+    // Vokabeln auslesen
+    List<Vokabel> alleVokabeln = trainer.getAlleVokabeln();
+
+    // Vokabeln in die Oberfläche einfügen
+    alleVokabeln.toFirst();
+    while (alleVokabeln.hasAccess()) {
+
+      Vokabel v = alleVokabeln.getContent();
+
+      JTextField germanField = new JTextField(v.getDeutsch());
+      panel.add(germanField);
+      JTextField englischField = new JTextField(v.getEnglisch());
+      panel.add(englischField);
+
+      // Knöpfe für Speichern und Entfernen
+      JButton speichernButton = new JButton("Speichern");
+      speichernButton.addActionListener(
+              new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                  v.setDeutsch(germanField.getText());
+                  v.setEnglisch(englischField.getText());
+                  trainer.speichereVokabeln();
+                }
+              });
+
+      JButton delButton = new JButton("Entfernen");
+      delButton.addActionListener(
+              new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                  trainer.entferneVokabel(v);
+                  trainer.speichereVokabeln();
+
+                }
+              });
+
+      panel.add(speichernButton);
+      panel.add(delButton);
+
+      alleVokabeln.next();
     }
 
-    public void actionPerformed(ActionEvent e) {
-      String neuesEnglisch = englischField.getText();
-      vokabel.setEnglisch(neuesEnglisch);
-      trainer.speichereVokabeln();
-    }
+    // Spacer im panel zur visuellen Trennung
+    panel.add(new JSeparator());
+    panel.add(new JSeparator());
+
+    // Knopf zum Hinzufügen von Vokabeln
+    JButton addButton = new JButton("Neue Vokabel");
+    addButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        // Erfrage deutsches und englisches Wort in einem Dialog
+        String deutsch = JOptionPane.showInputDialog(null, "Deutsches Wort:").toLowerCase();
+        String englisch = JOptionPane.showInputDialog(null, "Englisches Wort:").toLowerCase();
+
+        // Vokabel hinzufügen
+        trainer.fuegeHinzu(deutsch, englisch);
+        trainer.speichereVokabeln();
+      }
+    });
+
+    // Knopf zum Aktualisieren der Oberfläche
+    JButton refreshButton = new JButton("Aktualisieren");
+    refreshButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        dialog.dispose();
+        editGUI();
+      }
+    });
+
+    // Knöpfe in die Oberfläche einfügen
+    panel.add(addButton);
+    panel.add(refreshButton);
+
+    // Tabellen basierte Oberfläche in einen ScrollPane packen
+    JScrollPane scrollPane = new JScrollPane(panel);
+
+    // ScrollPane in den Dialog einfügen
+    dialog.add(scrollPane);
+    dialog.pack();
+    dialog.setVisible(true);
   }
 
   public static void main(String[] args) {
