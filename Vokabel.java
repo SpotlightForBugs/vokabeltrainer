@@ -15,7 +15,6 @@ public class Vokabel {
     return englisch;
   }
 
-
   public void setDeutsch(String deutsch) {
     this.deutsch = deutsch;
   }
