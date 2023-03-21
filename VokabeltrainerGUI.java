@@ -93,7 +93,6 @@ public class VokabeltrainerGUI extends JFrame {
       vokabeln.toFirst();
       while (vokabeln.hasAccess()) {
         Vokabel v = vokabeln.getContent();
-        vokabeln.next();
 
         String frage = deNachEn ? v.getDeutsch() : v.getEnglisch();
         String antwort = JOptionPane.showInputDialog(null, frage);
@@ -113,10 +112,14 @@ public class VokabeltrainerGUI extends JFrame {
                   + " gewesen.\n");
           trainer.beantworteVokabel(v, false);
         }
+
+        vokabeln.next();
       }
+
       ausgabe.append(
           "\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
     }
+
   }
 
   private class BearbeitenButtonHandler implements ActionListener {

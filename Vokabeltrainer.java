@@ -120,12 +120,19 @@ public class Vokabeltrainer {
   public void beantworteVokabel(Vokabel vokabel, boolean richtigBeantwortet) {
     if (richtigBeantwortet) {
 
+      /*// Debug: Gebe bekannte Vokabeln aus
+      System.out.println("----bevor----");
+      bekannteVokabeln.toFirst();
+      while(bekannteVokabeln.hasAccess()) {
+        System.out.println(bekannteVokabeln.getContent().getDeutsch());
+        bekannteVokabeln.next();
+      }*/
+
       neueVokabeln.toFirst();
       while (neueVokabeln.hasAccess()) {
         if (neueVokabeln.getContent() == vokabel) {
           neueVokabeln.remove();
         }
-
         neueVokabeln.next();
       }
 
@@ -139,6 +146,14 @@ public class Vokabeltrainer {
 
       if (!(contains)) bekannteVokabeln.append(vokabel);
 
+      /*// Debug: Gebe bekannte Vokabeln aus
+      System.out.println("--------");
+      bekannteVokabeln.toFirst();
+      while(bekannteVokabeln.hasAccess()) {
+        System.out.println(bekannteVokabeln.getContent().getDeutsch());
+        bekannteVokabeln.next();
+      }*/
+
     } else {
 
       boolean contains = false;
@@ -149,7 +164,23 @@ public class Vokabeltrainer {
       }
 
       if (!(contains)) falscheVokabeln.append(vokabel);
+
+      // Entferne Vokabel aus bekannter Liste
+      bekannteVokabeln.toFirst();
+
+      while (bekannteVokabeln.hasAccess()) {
+        if (bekannteVokabeln.getContent() == vokabel) {
+          bekannteVokabeln.remove();
+        }
+        bekannteVokabeln.next();
+      }
     }
+  }
+
+  public void fuegeHinzu(String deutsch, String englisch) {
+    Vokabel v = new Vokabel(deutsch, englisch);
+    alleVokabeln.append(v);
+    neueVokabeln.append(v);
   }
 
   public void speichereVokabeln() {
@@ -167,6 +198,57 @@ public class Vokabeltrainer {
     } catch (IOException e) {
       System.out.println(
           "Fehler beim Schreiben der Datei " + datei.getName() + ": " + e.getMessage());
+    }
+
+    //Speichere bekannte Vokabeln
+    try {
+        FileWriter bekanntewriter = new FileWriter(bekannt);
+
+        bekannteVokabeln.toFirst();
+        while (bekannteVokabeln.hasAccess()) {
+            Vokabel v = bekannteVokabeln.getContent();
+            bekanntewriter.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
+            bekannteVokabeln.next();
+        }
+
+        bekanntewriter.close();
+        } catch (IOException e) {
+        System.out.println(
+            "Fehler beim Schreiben der Datei " + bekannt.getName() + ": " + e.getMessage());
+    }
+
+    //Speichere neue Vokabeln
+    try {
+      FileWriter neuewriter = new FileWriter(neu);
+
+      neueVokabeln.toFirst();
+        while (neueVokabeln.hasAccess()) {
+            Vokabel v = neueVokabeln.getContent();
+            neuewriter.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
+            neueVokabeln.next();
+        }
+        neuewriter.close();
+    }
+    catch (IOException e) {
+        System.out.println(
+            "Fehler beim Schreiben der Datei " + neu.getName() + ": " + e.getMessage());
+    }
+
+    //Speichere falsche Vokabeln
+    try {
+      FileWriter falschwriter = new FileWriter(falsch);
+
+      falscheVokabeln.toFirst();
+        while (falscheVokabeln.hasAccess()) {
+            Vokabel v = falscheVokabeln.getContent();
+            falschwriter.write(v.getDeutsch() + ";" + v.getEnglisch() + "\n");
+            falscheVokabeln.next();
+        }
+        falschwriter.close();
+    }
+    catch (IOException e) {
+      System.out.println(
+              "Fehler beim Schreiben der Datei " + falsch.getName() + ": " + e.getMessage());
     }
   }
 }
