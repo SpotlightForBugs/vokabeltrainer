@@ -175,6 +175,41 @@ public class Vokabeltrainer {
     neueVokabeln.append(v);
   }
 
+    public void entferneVokabel(Vokabel vokabel) {
+      // Entferne Vokabel aus allen Listen
+      alleVokabeln.toFirst();
+      while (alleVokabeln.hasAccess()) {
+        if (alleVokabeln.getContent() == vokabel) {
+          alleVokabeln.remove();
+        }
+        alleVokabeln.next();
+      }
+
+      neueVokabeln.toFirst();
+      while (neueVokabeln.hasAccess()) {
+        if (neueVokabeln.getContent() == vokabel) {
+          neueVokabeln.remove();
+        }
+        neueVokabeln.next();
+      }
+
+      bekannteVokabeln.toFirst();
+      while (bekannteVokabeln.hasAccess()) {
+        if (bekannteVokabeln.getContent() == vokabel) {
+          bekannteVokabeln.remove();
+        }
+        bekannteVokabeln.next();
+      }
+
+      falscheVokabeln.toFirst();
+      while (falscheVokabeln.hasAccess()) {
+        if (falscheVokabeln.getContent() == vokabel) {
+          falscheVokabeln.remove();
+        }
+        falscheVokabeln.next();
+      }
+    }
+
   public void speichereVokabeln() {
     try {
       FileWriter writer = new FileWriter(datei);

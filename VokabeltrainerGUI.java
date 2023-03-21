@@ -140,9 +140,18 @@ public class VokabeltrainerGUI extends JFrame {
         JTextField englischField = new JTextField(v.getEnglisch());
         panel.add(englischField);
         JButton speichernButton = new JButton("Speichern");
+        JButton delButton = new JButton("Entfernen");
         speichernButton.addActionListener(new SpeichernButtonHandler(v, englischField));
+        delButton.addActionListener(
+            new ActionListener() {
+              public void actionPerformed(ActionEvent e) {
+                trainer.entferneVokabel(v);
+                trainer.speichereVokabeln();
+
+              }
+            });
         panel.add(speichernButton);
-        panel.add(new JLabel(""));
+        panel.add(delButton);
         alleVokabeln.next();
       }
 
