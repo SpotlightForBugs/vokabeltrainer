@@ -109,18 +109,14 @@ public class VokabeltrainerGUI extends JFrame {
           numCorrect++;
           trainer.beantworteVokabel(v, true);
         } else {
-          ausgabe.append(
-              "Falsch! Richtig wäre "
-                  + (deNachEn ? v.getEnglisch() : v.getDeutsch())
-                  + " gewesen.\n");
+          ausgabe.append("Falsch! Richtig wäre " + (deNachEn ? v.getEnglisch() : v.getDeutsch()) + " gewesen.\n");
           trainer.beantworteVokabel(v, false);
         }
 
         vokabeln.next();
       }
 
-      ausgabe.append(
-          "\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
+      ausgabe.append("\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
 
       // Speichern der Vokabeln nach Abfrage
       trainer.speichereVokabeln();
@@ -144,7 +140,8 @@ public class VokabeltrainerGUI extends JFrame {
 
         Vokabel v = alleVokabeln.getContent();
 
-        panel.add(new JLabel(v.getDeutsch() + ":"));
+        JTextField germanField = new JTextField(v.getDeutsch());
+        panel.add(germanField);
         JTextField englischField = new JTextField(v.getEnglisch());
         panel.add(englischField);
 
@@ -153,6 +150,7 @@ public class VokabeltrainerGUI extends JFrame {
         speichernButton.addActionListener(
             new ActionListener() {
               public void actionPerformed(ActionEvent e) {
+                v.setDeutsch(germanField.getText());
                 v.setEnglisch(englischField.getText());
                 trainer.speichereVokabeln();
               }
