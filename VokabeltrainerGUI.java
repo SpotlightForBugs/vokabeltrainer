@@ -88,7 +88,7 @@ public class VokabeltrainerGUI extends JFrame {
         return;
       }
       ausgabe.setText("");
-      vokabeln = Util.shuffle(vokabeln);
+      //vokabeln = Util.shuffle(vokabeln);
       int numCorrect = 0;
       vokabeln.toFirst();
       while (vokabeln.hasAccess()) {
@@ -96,19 +96,21 @@ public class VokabeltrainerGUI extends JFrame {
 
         String frage = deNachEn ? v.getDeutsch() : v.getEnglisch();
         String antwort = JOptionPane.showInputDialog(null, frage);
+
         if (antwort == null) {
           // Abbruch durch Benutzer
           ausgabe.setText("Abbruch durch Benutzer.");
           trainer.speichereVokabeln();
           return;
         }
+
         if (antwort.equalsIgnoreCase(deNachEn ? v.getEnglisch() : v.getDeutsch())) {
           ausgabe.append("Richtig!\n");
           numCorrect++;
           trainer.beantworteVokabel(v, true);
-        } else {
-          ausgabe.append(
-              "Falsch! Richtig wäre " + (deNachEn ? v.getEnglisch() : v.getDeutsch()) + " gewesen.\n");
+        }
+        else {
+          ausgabe.append("Falsch! Richtig wäre " + (deNachEn ? v.getEnglisch() : v.getDeutsch()) + " gewesen.\n");
           trainer.beantworteVokabel(v, false);
         }
 
