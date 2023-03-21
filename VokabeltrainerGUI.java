@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
 import javax.swing.*;
 // import Collections; // Import der java.util.Collections-Klasse
 // Import der java.util.Collections-Klasse
@@ -171,6 +172,23 @@ public class VokabeltrainerGUI extends JFrame {
 
         alleVokabeln.next();
       }
+
+      // Knopf zum Hinzufügen von Vokabeln
+      JButton addButton = new JButton("Neue Vokabel");
+      addButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          // Erfrage deutsches und englisches Wort in einem Dialog
+          String deutsch = JOptionPane.showInputDialog(null, "Deutsches Wort:").toLowerCase();
+          String englisch = JOptionPane.showInputDialog(null, "Englisches Wort:").toLowerCase();
+
+          // Vokabel hinzufügen
+          trainer.fuegeHinzu(deutsch, englisch);
+          trainer.speichereVokabeln();
+        }
+      });
+
+      panel.add(addButton);
+      panel.add(new JLabel("Aktualisieren"));
 
       // Tabellen basierte Oberfläche in einen ScrollPane packen
       JScrollPane scrollPane = new JScrollPane(panel);
