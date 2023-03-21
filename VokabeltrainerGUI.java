@@ -2,7 +2,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Locale;
 import javax.swing.*;
 // import Collections; // Import der java.util.Collections-Klasse
 // Import der java.util.Collections-Klasse
@@ -110,14 +109,18 @@ public class VokabeltrainerGUI extends JFrame {
           numCorrect++;
           trainer.beantworteVokabel(v, true);
         } else {
-          ausgabe.append("Falsch! Richtig wäre " + (deNachEn ? v.getEnglisch() : v.getDeutsch()) + " gewesen.\n");
+          ausgabe.append(
+              "Falsch! Richtig wäre "
+                  + (deNachEn ? v.getEnglisch() : v.getDeutsch())
+                  + " gewesen.\n");
           trainer.beantworteVokabel(v, false);
         }
 
         vokabeln.next();
       }
 
-      ausgabe.append("\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
+      ausgabe.append(
+          "\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
 
       // Speichern der Vokabeln nach Abfrage
       trainer.speichereVokabeln();
@@ -126,7 +129,7 @@ public class VokabeltrainerGUI extends JFrame {
 
   private class BearbeitenButtonHandler implements ActionListener {
     public void actionPerformed(ActionEvent e) {
-        editGUI();
+      editGUI();
     }
   }
 
@@ -154,23 +157,22 @@ public class VokabeltrainerGUI extends JFrame {
       // Knöpfe für Speichern und Entfernen
       JButton speichernButton = new JButton("Speichern");
       speichernButton.addActionListener(
-              new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                  v.setDeutsch(germanField.getText());
-                  v.setEnglisch(englischField.getText());
-                  trainer.speichereVokabeln();
-                }
-              });
+          new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+              v.setDeutsch(germanField.getText());
+              v.setEnglisch(englischField.getText());
+              trainer.speichereVokabeln();
+            }
+          });
 
       JButton delButton = new JButton("Entfernen");
       delButton.addActionListener(
-              new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                  trainer.entferneVokabel(v);
-                  trainer.speichereVokabeln();
-
-                }
-              });
+          new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+              trainer.entferneVokabel(v);
+              trainer.speichereVokabeln();
+            }
+          });
 
       panel.add(speichernButton);
       panel.add(delButton);
@@ -184,26 +186,28 @@ public class VokabeltrainerGUI extends JFrame {
 
     // Knopf zum Hinzufügen von Vokabeln
     JButton addButton = new JButton("Neue Vokabel");
-    addButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        // Erfrage deutsches und englisches Wort in einem Dialog
-        String deutsch = JOptionPane.showInputDialog(null, "Deutsches Wort:").toLowerCase();
-        String englisch = JOptionPane.showInputDialog(null, "Englisches Wort:").toLowerCase();
+    addButton.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            // Erfrage deutsches und englisches Wort in einem Dialog
+            String deutsch = JOptionPane.showInputDialog(null, "Deutsches Wort:").toLowerCase();
+            String englisch = JOptionPane.showInputDialog(null, "Englisches Wort:").toLowerCase();
 
-        // Vokabel hinzufügen
-        trainer.fuegeHinzu(deutsch, englisch);
-        trainer.speichereVokabeln();
-      }
-    });
+            // Vokabel hinzufügen
+            trainer.fuegeHinzu(deutsch, englisch);
+            trainer.speichereVokabeln();
+          }
+        });
 
     // Knopf zum Aktualisieren der Oberfläche
     JButton refreshButton = new JButton("Aktualisieren");
-    refreshButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        dialog.dispose();
-        editGUI();
-      }
-    });
+    refreshButton.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            dialog.dispose();
+            editGUI();
+          }
+        });
 
     // Knöpfe in die Oberfläche einfügen
     panel.add(addButton);
