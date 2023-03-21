@@ -120,14 +120,6 @@ public class Vokabeltrainer {
   public void beantworteVokabel(Vokabel vokabel, boolean richtigBeantwortet) {
     if (richtigBeantwortet) {
 
-      /*// Debug: Gebe bekannte Vokabeln aus
-      System.out.println("----bevor----");
-      bekannteVokabeln.toFirst();
-      while(bekannteVokabeln.hasAccess()) {
-        System.out.println(bekannteVokabeln.getContent().getDeutsch());
-        bekannteVokabeln.next();
-      }*/
-
       neueVokabeln.toFirst();
       while (neueVokabeln.hasAccess()) {
         if (neueVokabeln.getContent() == vokabel) {
@@ -146,13 +138,14 @@ public class Vokabeltrainer {
 
       if (!(contains)) bekannteVokabeln.append(vokabel);
 
-      /*// Debug: Gebe bekannte Vokabeln aus
-      System.out.println("--------");
-      bekannteVokabeln.toFirst();
-      while(bekannteVokabeln.hasAccess()) {
-        System.out.println(bekannteVokabeln.getContent().getDeutsch());
-        bekannteVokabeln.next();
-      }*/
+      // Entferne Vokabel aus falscher Liste
+      falscheVokabeln.toFirst();
+      while (falscheVokabeln.hasAccess()) {
+        if (falscheVokabeln.getContent() == vokabel) {
+          falscheVokabeln.remove();
+        }
+        falscheVokabeln.next();
+      }
 
     } else {
 

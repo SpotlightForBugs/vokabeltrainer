@@ -99,6 +99,7 @@ public class VokabeltrainerGUI extends JFrame {
         if (antwort == null) {
           // Abbruch durch Benutzer
           ausgabe.setText("Abbruch durch Benutzer.");
+          trainer.speichereVokabeln();
           return;
         }
         if (antwort.equalsIgnoreCase(deNachEn ? v.getEnglisch() : v.getDeutsch())) {
@@ -107,17 +108,17 @@ public class VokabeltrainerGUI extends JFrame {
           trainer.beantworteVokabel(v, true);
         } else {
           ausgabe.append(
-              "Falsch! Richtig wäre "
-                  + (deNachEn ? v.getEnglisch() : v.getDeutsch())
-                  + " gewesen.\n");
+              "Falsch! Richtig wäre " + (deNachEn ? v.getEnglisch() : v.getDeutsch()) + " gewesen.\n");
           trainer.beantworteVokabel(v, false);
         }
 
         vokabeln.next();
       }
 
-      ausgabe.append(
-          "\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
+      ausgabe.append("\nErgebnis: " + numCorrect + "/" + Util.size(vokabeln) + " richtig beantwortet.");
+
+      // Speichern der Vokabeln nach Abfrage
+      trainer.speichereVokabeln();
     }
 
   }
