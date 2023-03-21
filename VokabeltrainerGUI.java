@@ -135,13 +135,18 @@ public class VokabeltrainerGUI extends JFrame {
 
       alleVokabeln.toFirst();
       while (alleVokabeln.hasAccess()) {
+
         Vokabel v = alleVokabeln.getContent();
+
         panel.add(new JLabel(v.getDeutsch() + ":"));
         JTextField englischField = new JTextField(v.getEnglisch());
         panel.add(englischField);
+
+        // Knöpfe für Speichern und Entfernen
         JButton speichernButton = new JButton("Speichern");
-        JButton delButton = new JButton("Entfernen");
         speichernButton.addActionListener(new SpeichernButtonHandler(v, englischField));
+
+        JButton delButton = new JButton("Entfernen");
         delButton.addActionListener(
             new ActionListener() {
               public void actionPerformed(ActionEvent e) {
@@ -150,8 +155,10 @@ public class VokabeltrainerGUI extends JFrame {
 
               }
             });
+
         panel.add(speichernButton);
         panel.add(delButton);
+
         alleVokabeln.next();
       }
 
